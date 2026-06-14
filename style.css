@@ -1,0 +1,308 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    font-family:'Segoe UI',sans-serif;
+    cursor:crosshair;
+
+    background:
+    linear-gradient(
+    135deg,
+    #0f0c29 0%,
+    #302b63 50%,
+    #24243e 100%
+    );
+}
+
+/* START SCREEN */
+
+#startScreen{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    rgba(0,0,0,.85);
+
+    z-index:1000;
+}
+
+#startScreen h1{
+    color:white;
+    font-size:80px;
+
+    margin-bottom:30px;
+
+    text-shadow:
+    0 0 20px #9f7aea,
+    0 0 40px #6c63ff;
+}
+
+#startBtn{
+    padding:18px 50px;
+
+    border:none;
+    border-radius:50px;
+
+    font-size:24px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    #6c63ff,
+    #9f7aea
+    );
+
+    box-shadow:
+    0 0 25px rgba(108,99,255,.6);
+
+    transition:.3s;
+}
+
+#startBtn:hover{
+    transform:scale(1.08);
+}
+
+/* HUD */
+
+#hud{
+    position:fixed;
+
+    top:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:95%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:15px 25px;
+
+    border-radius:20px;
+
+    background:
+    rgba(255,255,255,.08);
+
+    backdrop-filter:blur(15px);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+
+    z-index:100;
+}
+
+#score{
+    color:#00ff99;
+}
+
+#timer{
+    color:#ffd700;
+}
+
+#lives{
+    color:#ff6b81;
+}
+
+#exitBtn{
+    padding:10px 20px;
+
+    border:none;
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+    font-weight:bold;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff416c,
+    #ff4b2b
+    );
+
+    transition:.3s;
+}
+
+#exitBtn:hover{
+    transform:scale(1.05);
+}
+
+/* GAME AREA */
+
+#gameArea{
+    width:100vw;
+    height:100vh;
+
+    position:relative;
+    overflow:hidden;
+}
+
+/* LIGHT EFFECT */
+
+#gameArea::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(
+    circle at center,
+    rgba(255,255,255,.08),
+    transparent 65%
+    );
+
+    pointer-events:none;
+}
+
+/* FRUITS */
+
+.fruit{
+    position:absolute;
+
+    font-size:80px;
+
+    user-select:none;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    filter:
+    drop-shadow(
+    0 0 20px rgba(255,255,255,.6)
+    );
+
+    transition:
+    transform .2s,
+    opacity .2s;
+}
+
+/* GAME OVER SCREEN */
+
+#gameOverScreen{
+    position:fixed;
+    inset:0;
+
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    rgba(0,0,0,.92);
+
+    color:white;
+
+    z-index:9999;
+}
+
+#resultText{
+    font-size:65px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+    text-shadow:
+    0 0 20px #9f7aea;
+}
+
+#finalScore{
+    font-size:30px;
+
+    margin-bottom:30px;
+}
+
+#restartBtn{
+    padding:16px 40px;
+
+    border:none;
+    border-radius:50px;
+
+    cursor:pointer;
+
+    font-size:20px;
+    font-weight:bold;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    #00c853,
+    #00e676
+    );
+
+    box-shadow:
+    0 0 20px rgba(0,230,118,.5);
+
+    transition:.3s;
+}
+
+#restartBtn:hover{
+    transform:scale(1.08);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    #startScreen h1{
+        font-size:50px;
+        text-align:center;
+    }
+
+    #startBtn{
+        font-size:18px;
+        padding:14px 28px;
+    }
+
+    #hud{
+        width:98%;
+        font-size:16px;
+        padding:10px;
+    }
+
+    #exitBtn{
+        padding:7px 12px;
+        font-size:13px;
+    }
+
+    .fruit{
+        font-size:60px;
+    }
+
+    #resultText{
+        font-size:40px;
+    }
+
+    #finalScore{
+        font-size:22px;
+    }
+}

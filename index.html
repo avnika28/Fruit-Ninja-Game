@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Ninja</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Start Screen -->
+    <div id="startScreen">
+        <h1>🍉 Fruit Ninja</h1>
+        <button id="startBtn">Start Game</button>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+
+        <div>
+            Score:
+            <span id="score">0</span>
+        </div>
+
+        <div id="timer">
+            ⏰ 60
+        </div>
+
+        <div id="lives">
+            ❤️❤️❤️
+        </div>
+
+        <button id="exitBtn">
+            Exit
+        </button>
+
+    </div>
+
+    <!-- Game Area -->
+    <div id="gameArea"></div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" style="display:none;">
+
+        <h1 id="resultText">
+            Game Over
+        </h1>
+
+        <p id="finalScore">
+            Score : 0
+        </p>
+
+        <button id="restartBtn"
+                onclick="location.reload()">
+            🔄 Restart Game
+        </button>
+
+    </div>
+
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
