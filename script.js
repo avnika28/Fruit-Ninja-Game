@@ -11,168 +11,183 @@ const resultText = document.getElementById("resultText");
 const finalScore = document.getElementById("finalScore");
 
 const exitBtn = document.getElementById("exitBtn");
+const restartBtn = document.getElementById("restartBtn");
 
 let score = 0;
 let lives = 20;
 let timeLeft = 60;
 
 let gameRunning = false;
-
 let fruitSpawner;
 let timerInterval;
 
 const fruits = [
-    "🍎",
-    "🍉",
-    "🍓",
-    "🍊",
-    "🍍",
-    "🥝",
-    "🍒",
-    "🥭"
+  "🍎",
+  "🍉",
+  "🍓",
+  "🍊",
+  "🍍",
+  "🥝",
+  "🍒",
+  "🥭"
 ];
 
 function updateLives() {
-    livesText.innerText = "❤️".repeat(lives);
+  livesText.innerText = "❤️".repeat(lives);
 }
 
 function endGame(message) {
+  gameRunning = false;
 
-    gameRunning = false;
+  clearInterval(fruitSpawner);
+  clearInterval(timerInterval);
 
-    clearInterval(fruitSpawner);
-    clearInterval(timerInterval);
+  resultText.innerText = message;
+  finalScore.innerText = `Final Score : ${score}`;
 
-    resultText.innerText = message;
-    finalScore.innerText = `Final Score : ${score}`;
-
-    gameOverScreen.style.display = "flex";
+  gameOverScreen.style.display = "flex";
 }
 
 function createFruit() {
+  if (!gameRunning) return;
+
+  const fruit = document.createElement("div");
+
+  fruit.classList.add("fruit");
+
+  fruit.innerHTML =
+    fruits[Math.floor(Math.random() * fruits.length)];
+
+  let x = Math.random() * (window.innerWidth - 100);
+  let y = window.innerHeight;
+
+  fruit.style.left = x + "px";
+  fruit.style.top = y + "px";
+
+  gameArea.appendChild(fruit);
+
+  let speed = 3 + Math.random() * 3;
+
+  const move = setInterval(() => {
+
+    y -= speed;
+
+    fruit.style.top = y + "px";
+
+    if (y < -100) {
+
+      clearInterval(move);
+
+      if (fruit.parentNode) {
+
+        fruit.remove();
+
+        lives--;
+
+        updateLives();
+
+        if (lives <= 0) {
+          endGame("💀 GAME OVER");
+        }
+      }
+    }
+
+  }, 20);
+
+  function cutFruit() {
 
     if (!gameRunning) return;
 
-    const fruit = document.createElement("div");
+    clearInterval(move);
 
-    fruit.classList.add("fruit");
+    score++;
 
-    fruit.innerHTML =
-        fruits[Math.floor(Math.random() * fruits.length)];
+    scoreText.innerText = score;
 
-    let x =
-        Math.random() *
-        (window.innerWidth - 100);
+    fruit.style.transform =
+      "scale(2) rotate(180deg)";
 
-    let y = window.innerHeight;
+    fruit.style.opacity = "0";
 
-    fruit.style.left = x + "px";
-    fruit.style.top = y + "px";
+    setTimeout(() => {
 
-    gameArea.appendChild(fruit);
+      if (fruit.parentNode) {
+        fruit.remove();
+      }
 
-    let speed =
-        3 + Math.random() * 3;
+    }, 200);
 
-    const move = setInterval(() => {
+    if (score >= 50) {
 
-        y -= speed;
+      if (typeof confetti === "function") {
 
-        fruit.style.top = y + "px";
+        confetti({
+          particleCount: 250,
+          spread: 180,
+          origin: { y: 0.6 }
+        });
 
-        if (y < -100) {
+      }
 
-            clearInterval(move);
+      endGame("🏆 YOU WIN! 🎉");
+    }
+  }
 
-            if (fruit.parentNode) {
+  // Desktop
+  fruit.addEventListener("mouseenter", cutFruit);
 
-                fruit.remove();
-
-                lives--;
-
-                updateLives();
-
-                if (lives <= 0) {
-
-                    endGame("💀 GAME OVER");
-
-                }
-            }
-        }
-
-    }, 20);
-
-    fruit.addEventListener("mouseenter", () => {
-
-        if (!gameRunning) return;
-
-        clearInterval(move);
-
-        score++;
-
-        scoreText.innerText = score;
-
-        fruit.style.transform =
-            "scale(2) rotate(180deg)";
-
-        fruit.style.opacity = "0";
-
-        setTimeout(() => {
-
-            if (fruit.parentNode) {
-                fruit.remove();
-            }
-
-        }, 200);
-
-        if (score >= 50) {
-
-            if (typeof confetti === "function") {
-
-                confetti({
-                    particleCount: 300,
-                    spread: 180,
-                    origin: { y: 0.6 }
-                });
-
-            }
-
-            endGame("🏆 YOU WIN! 🎉");
-        }
-
-    });
+  // Mobile
+  fruit.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    cutFruit();
+  });
 }
 
-startBtn.addEventListener("click", () => {
+function startGame() {
 
-    startScreen.style.display = "none";
+  score = 0;
+  lives = 20;
+  timeLeft = 60;
 
-    gameRunning = true;
+  scoreText.innerText = score;
+  timerText.innerText = "⏰ " + timeLeft;
 
-    fruitSpawner =
-        setInterval(createFruit, 1000);
+  updateLives();
 
-    timerInterval =
-        setInterval(() => {
+  gameOverScreen.style.display = "none";
+  startScreen.style.display = "none";
 
-            timeLeft--;
+  gameRunning = true;
 
-            timerText.innerText =
-                "⏰ " + timeLeft;
+  fruitSpawner =
+    setInterval(createFruit, 1000);
 
-            if (timeLeft <= 0) {
+  timerInterval =
+    setInterval(() => {
 
-                endGame("⌛ TIME OVER");
+      timeLeft--;
 
-            }
+      timerText.innerText =
+        "⏰ " + timeLeft;
 
-        }, 1000);
+      if (timeLeft <= 0) {
 
-});
+        endGame("⌛ TIME OVER");
+
+      }
+
+    }, 1000);
+}
+
+startBtn.addEventListener("click", startGame);
+
+if (restartBtn) {
+  restartBtn.addEventListener("click", startGame);
+}
 
 exitBtn.addEventListener("click", () => {
 
-    endGame("👋 GAME EXITED");
+  endGame("👋 GAME EXITED");
 
 });
 
